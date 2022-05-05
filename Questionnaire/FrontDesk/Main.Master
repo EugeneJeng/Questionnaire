@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="Questionnaire.FrontDesk.Main" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/jquery.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>    
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+
+                    <h1>前台</h1>
+                    <a href="../StartPage.aspx">首頁</a>
+
+                </div>
+                <br />
+                <div class="col-md-8">
+
+                    <asp:Repeater ID="repContent" runat="server">
+                        <ItemTemplate>                    
+                            <asp:Literal ID="ltlState" runat="server"></asp:Literal><br />
+                            <asp:Literal ID="ltlQueTime" runat="server" Text='<%# ((DateTime)Eval("StartTime")).ToString("yyyy/MM/dd") + "~" + ((DateTime)  Eval  ("EndTime")).ToString("yyyy/MM/dd") %>'></asp:Literal>
+                            <h2><asp:Literal ID="ltlTitle" runat="server" Text='<%#Eval("Title") %>'></asp:Literal></h2>
+                            <h4><asp:Literal ID="Literal1" runat="server" Text='<%#Eval("QueContent") %>'></asp:Literal></h4>
+                        </ItemTemplate>
+                    </asp:Repeater>
+
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

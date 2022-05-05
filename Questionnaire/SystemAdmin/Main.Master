@@ -1,0 +1,35 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="Questionnaire.SystemAdmin.Main" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/jquery.min.js"></script>    
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h1><asp:Label ID="labTitle" runat="server" Text="後台 - 問卷管理"></asp:Label></h1>
+        <a href="../StartPage.aspx">首頁</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="List.aspx">問卷管理</a><br />
+                    <a href="FrequentlyQue.aspx">常用問題管理</a>
+                </div>
+                <br />
+                <div class="col-md-8">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+                                    
+    </form>
+</body>
+</html>
