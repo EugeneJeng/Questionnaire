@@ -33,6 +33,7 @@ namespace Questionnaire.FrontDesk
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            //  前台
             if (!IsPostBack)
             {
                 string txtPageIndex = Request.QueryString["Index"];
@@ -93,35 +94,68 @@ namespace Questionnaire.FrontDesk
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            string url = Request.Url.LocalPath;
+            //string url = Request.Url.LocalPath;
+            string url = "List.aspx";
             string keyword = txtSearch.Text.Trim();
+            int count = 0;
+            string errMsg = string.Empty;
             if (!string.IsNullOrWhiteSpace(keyword))
             {
-                url += $"?keyword={keyword}&";
+                url += $"?keyword={keyword}";
+                count++;
             }
             string txtStartDate = txtStartTime.Text.Trim();
             string txtEndDate = txtEndTime.Text.Trim();
             DateTime startDate, endDate;
             DateTime? startTime, endTime;
-            if (!DateTime.TryParse(txtStartDate, out startDate))
+            if (!string.IsNullOrWhiteSpace(txtStartDate))
             {
-                startTime = null;
+                if (!DateTime.TryParse(txtStartDate, out startDate))
+                {
+                    startTime = null;
+                    errMsg += "起始時間格式不符，請以 yyyy/MM/dd 來填寫\\n";
+                }
+                else if (count > 0)
+                {
+                    startTime = startDate;
+                    url += $"&StartDate={startDate.ToString("yyyy/MM/dd")}";
+                    count++;
+                }
+                else
+                {
+                    startTime = startDate;
+                    url += $"?StartDate={startDate.ToString("yyyy/MM/dd")}";
+                    count++;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtEndDate))
+            {
+                if (!DateTime.TryParse(txtEndDate, out endDate))
+                {
+                    endTime = null;
+                    errMsg += "結束時間格式不符，請以 yyyy/MM/dd 來填寫\\n";
+                }
+                else if (count > 0)
+                {
+                    endTime = endDate;
+                    url += $"&EndDate={endDate.ToString("yyyy/MM/dd")}";
+                }
+                else
+                {
+                    endTime = endDate;
+                    url += $"?EndDate={endDate.ToString("yyyy/MM/dd")}";
+                }
+            }
+            
+            if (string.IsNullOrWhiteSpace(errMsg))
+            {
+                Response.Redirect(url);
             }
             else
             {
-                startTime = startDate;
-                url += $"StartDate={startTime}&";
+                ShowErrorMsg(errMsg);
             }
-            if (!DateTime.TryParse(txtEndDate, out endDate))
-            {
-                endTime = null;
-            }
-            else
-            {
-                endTime = endDate;
-                url += $"EndDate={endTime}&";
-            }
-            Response.Redirect(url);
         }
         protected void Pages(List<QuestionnaireModel> list)
         {
@@ -180,6 +214,14 @@ namespace Questionnaire.FrontDesk
             {
                 this.linkPage5.Visible = false;
 
+            }
+        }
+        protected void ShowErrorMsg(string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(errMsg))
+            {
+                string errorMsg = "alert('" + errMsg + "');";
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, errorMsg, true);
             }
         }
     }

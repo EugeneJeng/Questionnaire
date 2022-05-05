@@ -152,8 +152,9 @@ namespace Questionnaire.SystemAdmin
                 model.Type = (QueType)Convert.ToInt32(dpQueType.SelectedIndex);
                 _qtmgr.CreateQuestion(model);
                 SetRep(queID);
+                Response.Redirect($"DetailQue.aspx?ID={queID}");
             }
-            Response.Redirect($"DetailQue.aspx?ID={queID}");
+            //Response.Redirect($"DetailQue.aspx?ID={queID}");
         }
         protected void EditMode()
         {
@@ -180,8 +181,8 @@ namespace Questionnaire.SystemAdmin
                 model.Type = (QueType)Convert.ToInt32(this.dpQueType.SelectedIndex);
                 _QuestionList.Add(model);
                 HttpContext.Current.Session["QuestionList"] = _QuestionList;
-            }
-            Response.Redirect($"DetailQue.aspx?ID={queID}");
+                Response.Redirect($"DetailQue.aspx?ID={queID}");
+            }            
         }
         protected bool ContentConfirm()
         {
@@ -208,15 +209,39 @@ namespace Questionnaire.SystemAdmin
                 errorMsg = "alert('" + errorMsg + "');";
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, errorMsg, true);
             }
+            Response.Write(errorMsg);
+        }
+        protected void ShowMsg(string msg)
+        {
+            if (!string.IsNullOrWhiteSpace(msg))
+            {
+                msg = "alert('" + msg + "');";
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, msg, true);
+            }
+            Response.Write(msg);
         }
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            if (_IsCreateMode)
+            {
+                CreateMode();
+            }
             List<QuestionModel> list = (List<QuestionModel>)HttpContext.Current.Session["QuestionList"];
             Guid queID = (Guid)HttpContext.Current.Session["QueID"];
             if (list==null || list.Count == 0)
             {
-                Response.Redirect($"DetailQue.aspx?ID={queID}");
+                string title = txtxQueTitle.Text.Trim();
+                string selection = txtAns.Text.Trim();
+                if(!string.IsNullOrWhiteSpace(title) || !string.IsNullOrWhiteSpace(selection))
+                {
+                    string msg = "如欲修改問題請先按加入後再送出";
+                    ShowMsg(msg);
+                }
+                else
+                {
+                    Response.Redirect($"DetailQue.aspx?ID={queID}");
+                }                
             }
             else
             {
@@ -224,8 +249,8 @@ namespace Questionnaire.SystemAdmin
                 {
                     _qtmgr.UpdateQuestion(model);
                 }
-            }
-            Response.Redirect($"DetailQue.aspx?ID={queID}");
+                Response.Redirect($"DetailQue.aspx?ID={queID}");
+            }            
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)

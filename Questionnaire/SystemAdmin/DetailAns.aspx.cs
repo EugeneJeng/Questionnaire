@@ -13,8 +13,10 @@ namespace Questionnaire.SystemAdmin
 {
     public partial class DetailAns : System.Web.UI.Page
     {
-        private bool _IsCreateMode = true;
-        private UserManager _umr = new UserManager();
+        private static bool _IsCreateMode = true;
+        private static UserManager _umr = new UserManager();
+        private static AnswerManager _amgr = new AnswerManager();
+        private static QuestionManager _qmgr = new QuestionManager();
         protected void Page_Load(object sender, EventArgs e)
         {
             Uri url = Request.UrlReferrer;
@@ -70,6 +72,21 @@ namespace Questionnaire.SystemAdmin
                 sb.Append($"姓名,{model.UserName}, ,手機,{String.Format("{0:0000000}", model.UserPhone)}\n");
                 sb.Append($"Email,{model.UserMail}, ,年齡,{model.UserAge}\n");
                 sb.Append($" , , , 填寫時間,{model.CreateDate.ToString("yyyy/MM/dd HH:mm")}\n");
+                sb.Append("\n");
+                Guid queID = (Guid)HttpContext.Current.Session["QueID"];
+                List<QuestionModel> questionList = _qmgr.GetQuestionList(queID);
+                int count = 1;
+                foreach(QuestionModel question in questionList)
+                {
+                    sb.Append($" {count}. ,{question.QueTitle}\n");
+                    List<AnswerModel> ansList = _amgr.GetAnswerList(question.QuestionID, model.UserID);
+                    foreach(AnswerModel ans in ansList)
+                    {
+                        sb.Append($" ,{ans.Answer}\n");
+                    }
+                    count++;
+                    sb.Append("\n");
+                }
                 sb.Append("\n\n");
             }
             Response.AddHeader("Content-disposition", "attachment; filename=\"" + fileName + "" + "\"");

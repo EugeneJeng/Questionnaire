@@ -12,30 +12,31 @@ namespace Questionnaire.Managers
     {
         public void CreateQuestionnaire(QuestionnaireModel model)
         {
+            int state = (int)model.State;
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
-                $@"
-                    INSERT INTO [Questionnaires] (Title, QueID, StartTime, EndTime, QueContent, State)
-                    VALUES (@title, @id, @startDate, @endDate, @queContent @state)
-                ";
+                $@"  INSERT INTO [Questionnaires]
+                        (Title, QueID, StartTime, EndTime, QueContent, State)
+                     VALUES 
+                        (@Title, @QueID, @StartTime, @EndTime, @QueContent, @State) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     using (SqlCommand command = new SqlCommand(commandText, conn))
                     {
-                        command.Parameters.AddWithValue("@title", model.Title);
-                        command.Parameters.AddWithValue("@id", model.QueID);
-                        command.Parameters.AddWithValue("@startDate", model.StartTime);
-                        command.Parameters.AddWithValue("@endDate", model.EndTime);
-                        command.Parameters.AddWithValue("@queContent", model.QueContent);
-                        command.Parameters.AddWithValue("@state", (int)model.State);
                         conn.Open();
+                        command.Parameters.AddWithValue("@Title", model.Title);
+                        command.Parameters.AddWithValue("@QueID", model.QueID);
+                        command.Parameters.AddWithValue("@StartTime", model.StartTime);
+                        command.Parameters.AddWithValue("@EndTime", model.EndTime);
+                        command.Parameters.AddWithValue("@QueContent", model.QueContent);
+                        command.Parameters.AddWithValue("@State", state);
                         command.ExecuteNonQuery();
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnaireManager.CreateQuestionnaire", ex);
                 throw;

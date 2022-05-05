@@ -67,6 +67,29 @@ namespace Questionnaire.SystemAdmin
         {
             foreach(QuestionModel model in questionList)
             {
+                AnswerModel ans = _amr.GetAnswer(model.QuestionID, user.UserID);
+                string txtAnsID = ans.AnswerID.ToString();
+                string[] txtAnsIDArray = txtAnsID.Split('-');
+                bool dataOK = false;
+                int num = 0;
+                foreach (string txt in txtAnsIDArray)
+                {
+                    if (!int.TryParse(txt, out int guidNum))
+                    {
+                        dataOK = true;
+                        break;
+                    }
+                    num += guidNum;
+                    if (num > 0)
+                    {
+                        dataOK = true;
+                        break;
+                    }
+                }
+                if (!dataOK)
+                {
+                    break;
+                }
                 Label labQue = new Label();
                 string question = $"{model.QuestionNumber}. {model.QueTitle}";
                 if (model.Necessary)

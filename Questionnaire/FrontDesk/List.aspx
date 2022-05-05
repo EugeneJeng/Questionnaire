@@ -37,8 +37,8 @@
                             開始 &nbsp/&nbsp 結束
                         </th>
                         <td>
-                            <asp:TextBox ID="txtStartTime" runat="server" Width="100px"></asp:TextBox>&nbsp
-                            <asp:TextBox ID="txtEndTime" runat="server" Width="100px"></asp:TextBox>
+                            <asp:TextBox ID="txtStartTime" runat="server" Width="100px" ValidateRequestMode="Disabled"></asp:TextBox>&nbsp
+                            <asp:TextBox ID="txtEndTime" runat="server" Width="100px" ValidateRequestMode="Disabled"></asp:TextBox>
                         </td>
                         <td>
                             <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" /><br />

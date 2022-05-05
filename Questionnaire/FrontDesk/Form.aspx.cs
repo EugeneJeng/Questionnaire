@@ -26,7 +26,7 @@ namespace Questionnaire.FrontDesk
             string errorMsg = HttpContext.Current.Session["ErrorMsg"] as string;
             if (!string.IsNullOrWhiteSpace(errorMsg))
             {
-                ErrorMag(errorMsg);
+                //ErrorMag(errorMsg);
             }
             hfID.Value = txtQueID;
             _ansList = HttpContext.Current.Session["AnsList"] as List<AnswerModel>;
@@ -385,7 +385,7 @@ namespace Questionnaire.FrontDesk
                 //}
                 if (errorCount != 0)
                 {
-                    ErrorMag(errorMsg);
+                    //ErrorMag(errorMsg);
                 }
             }
         }

@@ -12,7 +12,9 @@ namespace Questionnaire.Helper
 
         public static string GetConnectionString()
         {
-            return GetConnectionString(_DataBase);
+            string conn = System.Configuration.ConfigurationManager.ConnectionStrings["DataBase"].ConnectionString;
+            return conn;
+            //return GetConnectionString(_DataBase);
         }
         public static string GetConnectionString(string database)
         {

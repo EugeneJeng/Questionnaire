@@ -39,7 +39,7 @@ namespace Questionnaire.SystemAdmin
             if (queID == null || IsCreateMode)
             {
                 //linkQue.HRef = "Detail.aspx";
-                linkQueContent.HRef = "DetailQue.aspx";
+                //linkQueContent.HRef = "DetailQue.aspx";
                 //linkData.HRef = "DetailAns.aspx";
                 //linkStatistics.HRef = "DetailStatistics.aspx";
             }
@@ -142,18 +142,22 @@ namespace Questionnaire.SystemAdmin
                 if (_IsCreateMode)
                 {
                     _qmgr.CreateQuestionnaire(model);
+                    ShowMsg();
+                    Response.Redirect("List.aspx");
+                    //HttpContext.Current.Session["tempGuid"] = model.QueID;
                 }
                 else
                 {
                     _qmgr.UpdateQuestionnaire(model);
+                    ShowMsg();
                 }
-                ShowMsg();
+                //ShowMsg();
                 //Response.Redirect("List.aspx");
             }
         }
         protected void ShowErrorMsg(string errMsg)
         {
-            if (string.IsNullOrWhiteSpace(errMsg))
+            if (!string.IsNullOrWhiteSpace(errMsg))
             {
                 string errorMsg = "alert('" + errMsg + "');";
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, errorMsg, true);
@@ -165,6 +169,12 @@ namespace Questionnaire.SystemAdmin
             {
                 string errorMsg = "alert('新增成功');";
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, errorMsg, true);
+                HttpContext.Current.Session["temp"] = "新增成功";
+                //HiddenField hd1 = Form.FindControl("hd1") as HiddenField;
+                //hd1.Value = "OK";
+                //Guid temp = (Guid)HttpContext.Current.Session["tempGuid"];
+                //HiddenField hd2 = Form.FindControl("hd2") as HiddenField;
+                //hd2.Value = temp.ToString();
             }
             else
             {

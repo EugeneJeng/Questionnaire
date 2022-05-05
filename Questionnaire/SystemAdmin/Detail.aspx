@@ -7,6 +7,8 @@
     <a id="linkData" href="" runat="server">填寫資料</a>&nbsp
     <a id="linkStatistics" href="" runat="server">統計</a><br />
     <div margin="10px">
+        <asp:HiddenField ID="hd1" runat="server" Value="NotOK" />
+        <asp:HiddenField ID="hd2" runat="server" />
         <table>
             <tr>
                 <th>
@@ -52,9 +54,18 @@
                     <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
                 </td>
                 <td>
-                    <asp:Button ID="btnSend" runat="server" Text="送出" BackColor="MediumSeaGreen" OnClick="btnSend_Click" />
+                    <asp:Button ID="btnSend" runat="server" Text="送出" BackColor="MediumSeaGreen" OnClick="btnSend_Click" OnClientClick="btnOK()" />
                 </td>
             </tr>
         </table>
     </div>
+    <script>
+        //function btnOK() {
+        //    var test = $("id*=hd1").val();
+        //    var id = $("id*=hd2").val();
+        //    if (test == "OK") {
+        //        Response.redirect("Detail.aspx?" + id);
+        //    }
+        //}
+    </script>
 </asp:Content>
