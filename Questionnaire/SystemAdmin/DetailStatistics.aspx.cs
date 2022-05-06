@@ -16,6 +16,7 @@ namespace Questionnaire.SystemAdmin
         private QuestionnaireManager _qnmgr = new QuestionnaireManager();
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Session["QuestionList"] = null;
             string txtQueID = Request.QueryString["ID"];
             if (string.IsNullOrWhiteSpace(txtQueID) || !Guid.TryParse(txtQueID, out Guid queID))
             {

@@ -29,6 +29,15 @@ namespace Questionnaire.SystemAdmin
                 SetRep(queID);
             }
             LinkSet(txtqueID);
+            List<QuestionModel> list = (List<QuestionModel>)HttpContext.Current.Session["QuestionList"];
+            if (list == null)
+            {
+                labWorring.Text = "";
+            }
+            else
+            {
+                labWorring.Text = "有修改內容尚未儲存";
+            }
             string txtQuestionID = Request.QueryString["Ques"];
             string txtCommID = Request.QueryString["CommID"];
             if (!string.IsNullOrWhiteSpace(txtQuestionID))
@@ -64,11 +73,37 @@ namespace Questionnaire.SystemAdmin
         {
             if (!IsPostBack)
             {
-                QuestionModel model = _qtmgr.GetQuestionByID(queID,questionID);
-                txtxQueTitle.Text = model.QueTitle;
-                txtAns.Text = model.QueAns;
-                ckbNecessaryFirst.Checked = model.Necessary;
-                dpQueType.SelectedIndex = (int)model.Type;
+                List<QuestionModel> list = (List<QuestionModel>)HttpContext.Current.Session["QuestionList"];
+                if (list == null)
+                {
+                    QuestionModel model = _qtmgr.GetQuestionByID(queID, questionID);
+                    txtxQueTitle.Text = model.QueTitle;
+                    txtAns.Text = model.QueAns;
+                    ckbNecessaryFirst.Checked = model.Necessary;
+                    dpQueType.SelectedIndex = (int)model.Type;
+                }
+                else
+                {
+                    foreach (QuestionModel q in list)
+                    {
+                        if (q.QuestionID == questionID)
+                        {
+                            txtxQueTitle.Text = q.QueTitle;
+                            txtAns.Text = q.QueAns;
+                            ckbNecessaryFirst.Checked = q.Necessary;
+                            dpQueType.SelectedIndex = (int)q.Type;
+                            break;
+                        }
+                        else
+                        {
+                            QuestionModel model = _qtmgr.GetQuestionByID(queID, questionID);
+                            txtxQueTitle.Text = model.QueTitle;
+                            txtAns.Text = model.QueAns;
+                            ckbNecessaryFirst.Checked = model.Necessary;
+                            dpQueType.SelectedIndex = (int)model.Type;
+                        }
+                    }
+                }             
             }            
         }
 
@@ -78,13 +113,13 @@ namespace Questionnaire.SystemAdmin
             {
                 linkQue.HRef = "NewQue.aspx";
                 //linkQueContent.HRef = "DetailQue.aspx";
-                linkData.HRef = "DetailAns.aspx";
+                //linkData.HRef = "DetailAns.aspx";
                 //linkStatistics.HRef = "DetailStatistics.aspx";
             }
             else
             {
                 linkQue.HRef = $"Detail.aspx?ID={queID}";
-                linkQueContent.HRef = $"DetailQue.aspx?ID={queID}";
+                //linkQueContent.HRef = $"DetailQue.aspx?ID={queID}";
                 linkData.HRef = $"DetailAns.aspx?ID={queID}";
                 linkStatistics.HRef = $"DetailStatistics.aspx?ID={queID}";
             }
@@ -193,11 +228,14 @@ namespace Questionnaire.SystemAdmin
                 errorMsg += "問題不可為空白\\n";
                 IsOK = false;
             }
-            if (string.IsNullOrWhiteSpace(txtAns.Text.Trim()))
+            if (dpQueType.SelectedValue != "0")
             {
-                errorMsg += "回答不可為空白\\n";
-                IsOK = false;
-            }
+                if (string.IsNullOrWhiteSpace(txtAns.Text.Trim()))
+                {
+                    errorMsg += "回答不可為空白\\n";
+                    IsOK = false;
+                }
+            }            
             ErrorMag(errorMsg);
 
             return IsOK;
@@ -249,7 +287,9 @@ namespace Questionnaire.SystemAdmin
                 {
                     _qtmgr.UpdateQuestion(model);
                 }
-                Response.Redirect($"DetailQue.aspx?ID={queID}");
+                HttpContext.Current.Session["QuestionList"] = null;
+                labWorring.Text = "";
+                Response.Redirect($"DetailQue.aspx?ID={queID}");                
             }            
         }
 

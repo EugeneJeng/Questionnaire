@@ -83,24 +83,36 @@ namespace Questionnaire.FrontDesk
             rbList.Enabled = false;
             this.phAnsList.Controls.Add(rbList);
             string[] array = que.QueAns.Split(';');
-            if (int.TryParse(ans.Answer, out int txtAns))
+            if (ans != null)
             {
-                ans.Answer = array[txtAns];
-            }
-            int i = 0;
-            foreach (string option in array)
-            {
-                ListItem listItem = new ListItem(option, i.ToString());
-                if (ans!=null)
+                if (int.TryParse(ans.Answer, out int txtAns))
                 {
-                    if (string.Compare(ans.Answer, option) == 0)
-                    {
-                        listItem.Selected = true;
-                    }
+                    ans.Answer = array[txtAns];
                 }
-                i++;
-                rbList.Items.Add(listItem);
+                int i = 0;
+                foreach (string option in array)
+                {
+                    ListItem listItem = new ListItem(option, i.ToString());
+                    if (ans != null)
+                    {
+                        if (string.Compare(ans.Answer, option) == 0)
+                        {
+                            listItem.Selected = true;
+                        }
+                    }
+                    i++;
+                    rbList.Items.Add(listItem);
+                }
             }
+            else
+            {
+                foreach (string option in array)
+                {
+                    ListItem listItem = new ListItem();
+                    rbList.Items.Add(listItem);
+                }
+            }
+            
         }
         private void CreateCheckBoxLsit(QuestionModel que, int number)
         {

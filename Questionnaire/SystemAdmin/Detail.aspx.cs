@@ -16,6 +16,7 @@ namespace Questionnaire.SystemAdmin
         protected void Page_Load(object sender, EventArgs e)
         {
             Uri url = Request.UrlReferrer;
+            HttpContext.Current.Session["QuestionList"] = null;
             string txtQueID = Request.QueryString["ID"];
             if(Guid.TryParse(txtQueID, out Guid queID))
             {
@@ -45,7 +46,7 @@ namespace Questionnaire.SystemAdmin
             }
             else
             {
-                linkQue.HRef = $"Detail.aspx?ID={queID}";
+                //linkQue.HRef = $"Detail.aspx?ID={queID}";
                 linkQueContent.HRef = $"DetailQue.aspx?ID={queID}";
                 linkData.HRef = $"DetailAns.aspx?ID={queID}";
                 linkStatistics.HRef = $"DetailStatistics.aspx?ID={queID}";

@@ -177,24 +177,24 @@ namespace Questionnaire.Managers
                 whereCondition += "Title LIKE '%'+@keyword+'%'";
                 if (!string.IsNullOrWhiteSpace(startDate.ToString()))
                 {
-                    whereCondition += " AND StartTime > @startDate";
+                    whereCondition += " AND StartTime >= @startDate";
                 }
                 if (!string.IsNullOrWhiteSpace(endDate.ToString()))
                 {
-                    whereCondition += " AND EndTime < @endDate";
+                    whereCondition += " AND EndTime <= @endDate";
                 }
             }
             else if (!string.IsNullOrWhiteSpace(startDate.ToString()))
             {
-                whereCondition += "StartTime > @startDate";
+                whereCondition += "StartTime >= @startDate";
                 if (!string.IsNullOrWhiteSpace(endDate.ToString()))
                 {
-                    whereCondition += " AND EndTime < @endDate";
+                    whereCondition += " AND EndTime <= @endDate";
                 }
             }
             else if (!string.IsNullOrWhiteSpace(endDate.ToString()))
             {
-                whereCondition += "EndTime < @endDate";
+                whereCondition += "EndTime <= @endDate";
             }
             string commandText =
                 $@"

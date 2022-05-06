@@ -16,6 +16,7 @@ namespace Questionnaire.SystemAdmin
         private static List<CommonlyModel> _commList = new List<CommonlyModel>();
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Session["QuestionList"] = null;
             dpQue.SelectedValue = "1";
             dpQue.Enabled = false;
             string txtCommID = Request.QueryString["CommID"];

@@ -65,13 +65,14 @@ namespace Questionnaire.SystemAdmin
         }
         protected void SetAnsList(List<QuestionModel> questionList, UserModel user)
         {
-            foreach(QuestionModel model in questionList)
+            int queNumber = 1;
+            foreach (QuestionModel model in questionList)
             {
                 AnswerModel ans = _amr.GetAnswer(model.QuestionID, user.UserID);
                 string txtAnsID = ans.AnswerID.ToString();
                 string[] txtAnsIDArray = txtAnsID.Split('-');
                 bool dataOK = false;
-                int num = 0;
+                int num = 0;                
                 foreach (string txt in txtAnsIDArray)
                 {
                     if (!int.TryParse(txt, out int guidNum))
@@ -91,13 +92,14 @@ namespace Questionnaire.SystemAdmin
                     break;
                 }
                 Label labQue = new Label();
-                string question = $"{model.QuestionNumber}. {model.QueTitle}";
+                string question = $"{queNumber}. {model.QueTitle}";
                 if (model.Necessary)
                 {
                     question += " (必填欄位)";
                 }
                 labQue.Text = question + "<br/>";
                 phList.Controls.Add(labQue);
+                queNumber++;
                 switch (model.Type)
                 {
                     case QueType.文字:
@@ -109,7 +111,7 @@ namespace Questionnaire.SystemAdmin
                     case QueType.複選方塊:
                         CreateCheckBox(model, user);
                         break;
-                }
+                } 
             }
         }
         protected void CreateTextBox(QuestionModel que, UserModel user)

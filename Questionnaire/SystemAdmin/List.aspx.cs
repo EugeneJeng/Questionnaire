@@ -38,6 +38,7 @@ namespace Questionnaire.SystemAdmin
             if (!IsPostBack)
             {
                 string createSucc = HttpContext.Current.Session["temp"] as string;
+                HttpContext.Current.Session["QuestionList"] = null;
                 if (!string.IsNullOrWhiteSpace(createSucc))
                 {
                     ShowMsg();

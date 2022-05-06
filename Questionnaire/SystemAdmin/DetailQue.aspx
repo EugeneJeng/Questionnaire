@@ -6,6 +6,7 @@
     <a id="linkQueContent" href="" runat="server">問題</a>&nbsp
     <a id="linkData" href="" runat="server">填寫資料</a>&nbsp
     <a id="linkStatistics" href="" runat="server">統計</a><br />
+    <br />
     <table>
         <tr>
             <th>種類</th>
@@ -42,10 +43,18 @@
                 <asp:Label ID="labMag" runat="server" Text="(多個答案以 ; 分隔)"></asp:Label>
             </td>
             <td>
-                <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" />
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <td></td>
+            <td></td>
+            <td>
+                <asp:Button ID="Button1" runat="server" Text="加入修改" OnClick="btnAdd_Click" />
             </td>
         </tr>
     </table>
+    <br />
     <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
     <table border="1">
         <tr>
@@ -112,7 +121,10 @@
             </td>
             <td></td><td></td>
             <td>
-                <asp:Button ID="btnSend" runat="server" Text="送出" BackColor="MediumSeaGreen" OnClick="btnSend_Click" />
+                <asp:Button ID="btnSend" runat="server" Text="儲存修改內容" BackColor="MediumSeaGreen" OnClick="btnSend_Click" />
+            </td>
+            <td>
+                <asp:Label ID="labWorring" runat="server"></asp:Label>
             </td>
         </tr>
     </table>
