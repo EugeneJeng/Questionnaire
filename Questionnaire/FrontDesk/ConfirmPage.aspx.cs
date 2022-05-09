@@ -106,10 +106,12 @@ namespace Questionnaire.FrontDesk
             }
             else
             {
+                int i = 0;
                 foreach (string option in array)
                 {
-                    ListItem listItem = new ListItem();
+                    ListItem listItem = new ListItem(option, i.ToString());
                     rbList.Items.Add(listItem);
+                    i++;
                 }
             }
             

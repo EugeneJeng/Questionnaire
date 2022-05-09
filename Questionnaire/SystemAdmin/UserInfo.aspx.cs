@@ -69,6 +69,10 @@ namespace Questionnaire.SystemAdmin
             foreach (QuestionModel model in questionList)
             {
                 AnswerModel ans = _amr.GetAnswer(model.QuestionID, user.UserID);
+                if (ans.Answer == null)
+                {
+                    continue;
+                }
                 string txtAnsID = ans.AnswerID.ToString();
                 string[] txtAnsIDArray = txtAnsID.Split('-');
                 bool dataOK = false;

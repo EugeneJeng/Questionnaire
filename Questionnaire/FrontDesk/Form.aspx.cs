@@ -265,7 +265,7 @@ namespace Questionnaire.FrontDesk
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Guid queID = (Guid)HttpContext.Current.Session["QueID"];
-            Response.Redirect($"Form2.aspx?ID={queID.ToString()}");
+            Response.Redirect($"Form.aspx?ID={queID.ToString()}");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
