@@ -17,6 +17,12 @@ namespace Questionnaire.SystemAdmin
         private static CommonlyManager _cmgr = new CommonlyManager();
         protected void Page_Load(object sender, EventArgs e)
         {
+            bool IsComm = false;
+            string txtIsComm = HttpContext.Current.Session["IsComm"] as string;
+            if (string.Compare(txtIsComm, "true") == 0)
+            {
+                IsComm = true;
+            }
             Uri url = Request.UrlReferrer;
             string txtqueID = Request.QueryString["ID"];
             if (!Guid.TryParse(txtqueID, out Guid queID))
@@ -26,6 +32,7 @@ namespace Questionnaire.SystemAdmin
             else
             {
                 HttpContext.Current.Session["QueID"] = queID;
+                hf3.Value = queID.ToString();
                 SetRep(queID);
             }
             LinkSet(txtqueID);
@@ -128,6 +135,7 @@ namespace Questionnaire.SystemAdmin
         {
             if (!IsPostBack)
             {
+                HttpContext.Current.Session["QueID"] = queID;
                 if (dpQue.SelectedIndex == 0)
                 {
                     List<QuestionModel> list = _qtmgr.GetQuestionList(queID);
@@ -235,6 +243,21 @@ namespace Questionnaire.SystemAdmin
                     errorMsg += "回答不可為空白\\n";
                     IsOK = false;
                 }
+                else
+                {
+                    string txtSelect = txtAns.Text.Trim();
+                    string[] txtSelectArray = txtSelect.Split(';');
+                    foreach(string sel in txtSelectArray)
+                    {
+                        string select = sel.Trim();
+                        if (string.IsNullOrWhiteSpace(select))
+                        {
+                            errorMsg += "回答選項不可為空白\\n";
+                            IsOK = false;
+                            break;
+                        }
+                    }
+                }
             }            
             ErrorMag(errorMsg);
 
@@ -316,8 +339,10 @@ namespace Questionnaire.SystemAdmin
         }
         protected void dpQue_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Guid txtQueId = (Guid)HttpContext.Current.Session["QueID"];
             if (dpQue.SelectedIndex == 0)
             {
+                HttpContext.Current.Session["IsComm"] = "false";
                 string txtQueID = Request.QueryString["ID"];
                 if (string.IsNullOrWhiteSpace(txtQueID) || !Guid.TryParse(txtQueID, out Guid queID))
                 {
@@ -334,6 +359,7 @@ namespace Questionnaire.SystemAdmin
             }
             else
             {
+                HttpContext.Current.Session["IsComm"] = "true";
                 List<CommonlyModel> list = _cmgr.GetAllCommonly();
                 repCommonly.Visible = true;
                 repCommonly.DataSource = list;

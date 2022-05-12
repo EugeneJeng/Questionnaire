@@ -12,6 +12,7 @@ namespace Questionnaire.Models
         public Guid QueID { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public DateTime CreateDate { get; set; }
         public string QueContent { get; set; }
         public StateType State { get; set; }
     }

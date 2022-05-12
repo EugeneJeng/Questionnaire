@@ -95,8 +95,24 @@ namespace Questionnaire.SystemAdmin
         }
         protected void ShowList(List<QuestionnaireModel> list)
         {
-            repList.DataSource = list;
+            List<QuestionnaireModel> allList = _qmgr.GetQuestionnaireList();
+            int count = allList.Count;
+            string txtPageIndex = Request.QueryString["Index"];
+            if(!string.IsNullOrWhiteSpace(txtPageIndex) && string.Compare(txtPageIndex,"1") == 1)
+            {
+                int page = Convert.ToInt32(txtPageIndex);
+                count = count - (page-1) * 10;
+            }
+            repList.DataSource = list;            
             repList.DataBind();
+            
+            foreach (RepeaterItem item in this.repList.Items)
+            {
+                Label labCount = item.FindControl("labCount") as Label;
+                labCount.Text = $"{count}";
+                count--;
+            }
+
         }
         protected void btnSearch_Click(object sender, EventArgs e)
         {

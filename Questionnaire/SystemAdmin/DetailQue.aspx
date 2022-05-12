@@ -7,6 +7,7 @@
     <a id="linkData" href="" runat="server">填寫資料</a>&nbsp
     <a id="linkStatistics" href="" runat="server">統計</a><br />
     <br />
+    <asp:HiddenField ID="hf3" runat="server" />
     <table>
         <tr>
             <th>種類</th>
@@ -40,7 +41,7 @@
                 <asp:TextBox ID="txtAns" runat="server"></asp:TextBox>
             </td>
             <td>
-                <asp:Label ID="labMag" runat="server" Text="(多個答案以 ; 分隔)"></asp:Label>
+                <asp:Label ID="labMag" runat="server" Text="(多個答案以 ; 分隔，選項最後一個後面不要接著 ; )"></asp:Label>
             </td>
             <td>
             </td>
@@ -107,7 +108,7 @@
                         
                     </td>
                     <td align="center">
-                        <a href="<%=Request.RawUrl %>&CommID=<%#Eval("QuestionID") %>">選擇</a>
+                        <a href="DetailQue.aspx?ID=<%=((Guid)HttpContext.Current.Session["QueID"]).ToString()%>&CommID=<%#Eval("QuestionID") %>" id="aLink">選擇</a>
                     </td>
                 </tr>
             </ItemTemplate>

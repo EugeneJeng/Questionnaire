@@ -16,9 +16,9 @@ namespace Questionnaire.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 $@"  INSERT INTO [Questionnaires]
-                        (Title, QueID, StartTime, EndTime, QueContent, State)
+                        (Title, QueID, StartTime, EndTime, QueContent, State, CreateDate )
                      VALUES 
-                        (@Title, @QueID, @StartTime, @EndTime, @QueContent, @State) ";
+                        (@Title, @QueID, @StartTime, @EndTime, @QueContent, @State, @CreateDate) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -32,6 +32,7 @@ namespace Questionnaire.Managers
                         command.Parameters.AddWithValue("@EndTime", model.EndTime);
                         command.Parameters.AddWithValue("@QueContent", model.QueContent);
                         command.Parameters.AddWithValue("@State", state);
+                        command.Parameters.AddWithValue("@CreateDate", model.CreateDate);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -322,6 +323,7 @@ namespace Questionnaire.Managers
                 QueID = (Guid)reader["QueID"],
                 StartTime = (DateTime)reader["StartTime"],
                 EndTime = (DateTime)reader["EndTime"],
+                CreateDate = (DateTime)reader["CreateDate"],
                 QueContent = reader["QueContent"] as string,
                 State = (StateType)reader["State"]
             };

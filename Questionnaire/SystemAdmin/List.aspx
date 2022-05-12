@@ -40,7 +40,8 @@
                                 <asp:CheckBox ID="ckbDel" runat="server" />
                             </td>
                             <td align="center" style="width:40px">
-                                <asp:Label ID="labNumber" runat="server" Text='<%#Eval("Number") %>'></asp:Label>
+                                <asp:Label ID="labCount" runat="server" Text=""></asp:Label>
+                                <%--<asp:Label ID="labNumber" runat="server" Text='<%#Eval("Number") %>'></asp:Label>--%>
                             </td>
                             <td>
                                 <a href="Detail.aspx?ID=<%#Eval("QueID") %>">

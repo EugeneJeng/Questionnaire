@@ -24,7 +24,7 @@ namespace Questionnaire.SystemAdmin
                 HttpContext.Current.Session["QueID"] = queID;
             }
             LinkSet(queID, _IsCreateMode);
-            if (!_IsCreateMode&&!IsPostBack)
+            if (!_IsCreateMode && !IsPostBack)
             {
                 ShowData(queID);
             }
@@ -55,6 +55,7 @@ namespace Questionnaire.SystemAdmin
         protected void ShowData(Guid queID)
         {
             QuestionnaireModel model = _qmgr.GetQuestionnaireByQueID(queID);
+            HttpContext.Current.Session["Que"] = model;
             txtQueName.Text = model.Title;
             txtQueContent.Text = model.QueContent;
             txtStartDate.Text = model.StartTime.ToString("yyyy/MM/dd");
@@ -101,7 +102,31 @@ namespace Questionnaire.SystemAdmin
             }
             else
             {
-                model.StartTime = startDate;
+                if (_IsCreateMode)
+                {
+                    if (startDate < DateTime.Now.AddDays(-1))
+                    {
+                        errMsg += "開始時間不可為過去時間\\n";
+                    }
+                    else
+                    {
+                        model.StartTime = startDate;
+                        model.CreateDate = DateTime.Now;
+                    }
+                }
+                else
+                {
+                    QuestionnaireModel qq = HttpContext.Current.Session["Que"] as QuestionnaireModel;
+                    if (startDate < qq.CreateDate)
+                    {
+                        errMsg += $"此問卷創建時間為 {qq.CreateDate.ToString("yyyy/MM/dd")} , 問卷開始時間不可修改為創建時間前\\n";
+                    }
+                    else
+                    {
+                        model.CreateDate = qq.CreateDate;
+                        model.StartTime = startDate;
+                    }
+                }              
             }
             if (!DateTime.TryParse(this.txtEndDate.Text.Trim(), out endDate))
             {

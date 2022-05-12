@@ -88,6 +88,7 @@ namespace Questionnaire.Managers
                     SELECT *
                     FROM Questions
                     WHERE QueID = @queID
+                    ORDER BY QuestionNumber
                 ";
             try
             {

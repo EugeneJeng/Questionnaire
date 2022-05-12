@@ -86,7 +86,7 @@
                             window.location = "ConfirmPage.aspx?ID=" + $("#hfID").val();
                         }
                         if (txtMsg == "noAnswer") {
-                            alert("請作答");
+                            alert("尚無問卷內容請返回首頁");
                         }
                     },
                     error: function (msg) {
